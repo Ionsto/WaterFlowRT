@@ -9,6 +9,8 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <chrono>
+#include "EntityPlayer.h"
+#include "KeyManager.h"
 class GameManager
 {
 private:
@@ -17,6 +19,8 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> DtCounter;
 	float DeltaTime = 0;
 public:
+	KeyManager KeyInput;
+	EntityPlayer* player = nullptr;
 	float clickticker = 0;
 	int clicktickerwater = 0;
 	bool Running = true;

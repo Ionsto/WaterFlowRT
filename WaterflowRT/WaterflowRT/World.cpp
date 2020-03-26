@@ -42,7 +42,7 @@ void World::Update(float dt) {
 	GenerateCloudNoise(dt);
 	if (WaterCounter++ > 10)
 	{
-		UpdateWater(dt);
+		//UpdateWater(dt);
 	}
 	UpdateSun(dt);
 }
@@ -74,12 +74,13 @@ void World::UpdateWater(float dt)
 }
 void World::UpdateSun(float dt)
 {
-	float sunspeed = 0.1;
+	float sunspeed = 0.3;
 	SunCounter += dt * sunspeed;
 	SunPosition.x = grid.SizeX/2.0;
 	float sundist = grid.SizeX;
 	SunPosition.y = sundist * (sinf(SunCounter)) + (grid.SizeY/2.0);
 	SunPosition.z = sundist * (cosf(SunCounter)) + (grid.SizeZ/2.0);
+	SunColour = glm::fvec3(1,0.9,0.9);
 }
 void World::GenerateCloudNoise(float dt) {
 	float speed = 5;

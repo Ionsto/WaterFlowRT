@@ -3,6 +3,7 @@
 struct Voxel
 {
 	glm::fvec3 Colour = glm::fvec3(1,1,1);
+	glm::fvec3 ColourScatter = glm::fvec3(1,1,1);
 	float Density = 0.004;
 	bool Solid = false;
 	float Pressure = 0;

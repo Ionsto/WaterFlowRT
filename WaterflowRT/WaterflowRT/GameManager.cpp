@@ -45,9 +45,12 @@ GameManager::GameManager()
 	//world->AddWater(glm::dvec2(100,100));
 	std::cout << "Init render engine" << std::endl;
 	renderengine = std::make_unique<RenderEngineSWStepped>(Window_Handle);
+	renderengine->cam.Position.x = world->grid.SizeX / 2;
+	renderengine->cam.Position.y = world->grid.SizeY / 2;
 	int width, height;
 	glfwGetFramebufferSize(Window_Handle, &width, &height);
 	glViewport(0, 0, width, height);
+	glfwSetInputMode(Window_Handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 
@@ -94,27 +97,61 @@ void GameManager::Render()
 }
 void GameManager::PollInput()
 {
+	KeyInput.UpdateState(Window_Handle);
 	if (glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 	}
 	else {
 	}
 	float speed = 30 * DeltaTime;
-	if (glfwGetKey(Window_Handle, GLFW_KEY_W)){
-		renderengine->cam.tilt += speed;
+	if (player != nullptr)
+	{
+		player->PlayerInput.W = KeyInput.GetState(GLFW_KEY_W).first;
+		player->PlayerInput.S = KeyInput.GetState(GLFW_KEY_S).first;
+		player->PlayerInput.A = KeyInput.GetState(GLFW_KEY_A).first;
+		player->PlayerInput.D = KeyInput.GetState(GLFW_KEY_D).first;
+		double xpos, ypos;
+		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
+		player->PlayerInput.dx = xpos;
+		player->PlayerInput.dy = xpos;
 	}
-	if (glfwGetKey(Window_Handle, GLFW_KEY_S)){
-		renderengine->cam.tilt -= speed;
+	else {
+		double xpos, ypos;
+		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
+		glfwSetCursorPos(Window_Handle, 0, 0);
+		speed = DeltaTime * 5;
+		renderengine->cam.tilt -= ypos * speed;
+		renderengine->cam.yaw += xpos * speed;
+		float MoveSpeed = 5;
+		if (KeyInput.GetState(GLFW_KEY_W).first)
+		{
+			renderengine->cam.Position += DeltaTime * MoveSpeed * glm::fvec3(cos(glm::radians(renderengine->cam.yaw)),sin(glm::radians(renderengine->cam.yaw)),0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_S).first)
+		{
+			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(cos(glm::radians(renderengine->cam.yaw)),sin(glm::radians(renderengine->cam.yaw)),0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_A).first)
+		{
+			renderengine->cam.Position += DeltaTime * MoveSpeed * glm::fvec3(sin(glm::radians(renderengine->cam.yaw)),-cos(glm::radians(renderengine->cam.yaw)),0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_D).first)
+		{
+			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(sin(glm::radians(renderengine->cam.yaw)),-cos(glm::radians(renderengine->cam.yaw)),0);
+		}
 	}
-	if (glfwGetKey(Window_Handle, GLFW_KEY_D)){
-		renderengine->cam.yaw += speed;
+	//if (auto[s,t] = KeyInput.GetState(GLFW_KEY_1); s && t) {
+	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_1)) {
+		renderengine->RenderConfig.Reflections ^= true;
+		std::cout << "Reflections: " << renderengine->RenderConfig.Reflections << std::endl;
 	}
-	if (glfwGetKey(Window_Handle, GLFW_KEY_A)){
-		renderengine->cam.yaw -= speed;
+	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_2)) {
+		renderengine->RenderConfig.Refraction ^= true;
+		std::cout << "Refraction: " << renderengine->RenderConfig.Refraction << std::endl;
 	}
-	if (glfwGetKey(Window_Handle, GLFW_KEY_R)){
-	}
-	if (glfwGetKey(Window_Handle, GLFW_KEY_1)){
+	if (KeyInput.GetState(GLFW_KEY_ESCAPE).first)
+	{
+		Running = false;
 	}
 	if (glfwGetKey(Window_Handle, GLFW_KEY_2)){
 	}
@@ -133,8 +170,6 @@ void GameManager::Update()
 //	renderengine->cam.yaw += DeltaTime * 30;
 	//this->waterengine->Update(DeltaTime);
 	world->Update(DeltaTime);
-	renderengine->cam.Position.x = world->grid.SizeX / 2;
-	renderengine->cam.Position.y = world->grid.SizeY / 2;
 	if (glfwWindowShouldClose(Window_Handle)) {
 		Running = false;
 	}

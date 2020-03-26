@@ -137,7 +137,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityPlayer.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderEngine.cpp" />
@@ -148,12 +151,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityPlayer.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderEngine.h" />
     <ClInclude Include="RenderEngineSWStepped.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="SwapList.h" />
     <ClInclude Include="Voxel.h" />
     <ClInclude Include="VoxelGrid.h" />
     <ClInclude Include="World.h" />

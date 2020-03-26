@@ -9,8 +9,8 @@ public:
 	constexpr static int RealSize = 50;
 	constexpr static float GridDim = 1;
 	constexpr static int GridSize = static_cast<int>(static_cast<float>(RealSize) / GridDim);
-	static constexpr int SizeX = 50;
-	static constexpr int SizeY = 50;
+	static constexpr int SizeX = 200;
+	static constexpr int SizeY = 200;
 	static constexpr int SizeZ = 50;
 	//static constexpr float ScaleFactor = 0.1;
 //	std::array<Voxel, SizeX * SizeY> Raw_Data;

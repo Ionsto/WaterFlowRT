@@ -7,10 +7,10 @@
 #include "ShaderProgram.h"
 class RenderEngineSWStepped : public RenderEngine
 {
-	static constexpr int MaxSteps = 1000;
+	static constexpr int MaxSteps = 500;
 	static constexpr float StepSize = 0.1;
-	static constexpr int FrameSizeX = 20;
-	static constexpr int FrameSizeY = 20;
+	static constexpr int FrameSizeX = 30;
+	static constexpr int FrameSizeY = 30;
 	std::array<glm::fvec3,FrameSizeX * FrameSizeY> FrameBuffer;
 	Shader vertex;
 	Shader fragment;
@@ -34,7 +34,7 @@ public:
 	RenderEngineSWStepped(GLFWwindow* window);
 	virtual ~RenderEngineSWStepped();
 	virtual void RenderWorld(World& world) override;
-	void StepRay(Ray& ray, World& grid);
+	void StepRay(Ray& ray, World& grid,int Reflections = 0);
 	glm::fvec3 SunRay(glm::fvec3 pos, World& grid);
 	glm::fvec3 & GetPixel(int x, int y);
 };

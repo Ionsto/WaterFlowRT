@@ -106,7 +106,7 @@ glm::fvec3 RenderEngineSWStepped::SunRay(glm::fvec3 pos, World& world)
 			}
 			else {
 				Colour -= (vox.Colour * vox.Density * StepSize);
-				Colour -= (glm::fvec3(0.9,0.5,0) * vox.WaterContent * StepSize);
+				Colour -= (glm::fvec3(0.9,0.1,0) * vox.WaterContent * StepSize);
 			} 
 			if (glm::dot(Colour, Colour) < 0.0001)
 			{
@@ -122,10 +122,11 @@ glm::fvec3 RenderEngineSWStepped::SunRay(glm::fvec3 pos, World& world)
 	Colour.z = std::min(std::max(Colour.z,0.0f),1.0f);
 	return Colour;
 }
-void RenderEngineSWStepped::StepRay(Ray& ray, World& world)
+void RenderEngineSWStepped::StepRay(Ray& ray, World& world,int Reflections)
 {
 	auto& grid = world.grid;
-	for (int i = 0; i < MaxSteps; ++i)
+	int i;
+	for (i = 0; i < MaxSteps; ++i)
 	{
 		if (!grid.InBounds(ray.Origin.x,ray.Origin.y,ray.Origin.z))
 		{
@@ -137,23 +138,35 @@ void RenderEngineSWStepped::StepRay(Ray& ray, World& world)
 		//Sample to light source 
 		if (!vox.Solid)
 		{
-			ray.Colour += (vox.Colour * vox.Density * StepSize);// *lighting;
-			//ray.Colour += (glm::fvec3(0,0,0.1) * vox.WaterContent * StepSize);
+			ray.Colour -= (vox.Colour * vox.Density * StepSize);// *lighting;
+			ray.Colour += (glm::fvec3(0,0,0.1) * vox.WaterContent * StepSize);
+			//ray.Colour += vox.ColourScatter * vox.Density * StepSize;
 			//Refraction time
-		//	auto nextorigin = ray.Direction * StepSize;
-		//	if (grid.InBounds(nextorigin.x, nextorigin.y, nextorigin.z))
-		//	{
-		//		float rnda = ((rand() % 100) / 50.0);
-		//		float rndb = ((rand() % 100) / 50.0);
-		//		float dwater = ((vox.WaterContent *  rnda - grid.Get(nextorigin.x, nextorigin.y, nextorigin.z).WaterContent) * rndb)*0.01;// * ((rand()%100)/50.0)-1)*0.01;
-		//		auto normal = glm::round(nextorigin) - glm::round(ray.Origin);
-				//ray.Direction = ((1.0f - dwater) * ray.Direction) + (dwater * normal);
-		//		if(abs(dwater) > 0.5)
-		//		{
-		//			auto lighting = SunRay(ray.Origin, world);
-		//			ray.Colour += lighting * (1.0f - abs(glm::dot(ray.Origin - world.SunPosition,ray.Direction)));
-		//		}
-		//	}
+			auto nextorigin = ray.Origin + ray.Direction * StepSize;
+			if (grid.InBounds(nextorigin.x, nextorigin.y, nextorigin.z))
+			{
+				float rnda = ((rand() % 100) / 50.0);
+				float rndb = ((rand() % 100) / 50.0);
+				rnda = 1;
+				rndb = 1;
+				float dwater = ((vox.WaterContent * rnda - grid.Get(nextorigin.x, nextorigin.y, nextorigin.z).WaterContent) * rndb);// * ((rand()%100)/50.0)-1)*0.01;
+				glm::fvec3 normal = glm::floor(nextorigin) - glm::floor(ray.Origin);
+				if (RenderConfig.Refraction)
+				{
+					float effect = dwater * 0.1;
+					ray.Direction = ((1.0f - effect) * ray.Direction) + (effect * normal);
+				}
+				if(abs(dwater) > 0.5 && RenderConfig.Reflections && Reflections == 0)
+				{
+					Ray refl;
+				refl.Origin = ray.Origin;
+					refl.Direction = ray.Direction - (normal * glm::dot(normal,ray.Direction) * 2.0f);
+					StepRay(refl, world,Reflections+1);
+					auto lighting = refl.Colour;
+					//auto lighting = SunRay(ray.Origin, world);
+					ray.Colour += lighting * 0.5f;
+				}
+			}
 			ray.Origin += ray.Direction * StepSize;
 		}
 		else
@@ -162,6 +175,10 @@ void RenderEngineSWStepped::StepRay(Ray& ray, World& world)
 			ray.Colour += vox.Colour * lighting;
 			break;
 		}
+	}
+	if (i == MaxSteps)
+	{
+			ray.Colour.b += 1;
 	}
 	ray.Colour.x = std::min(std::max(ray.Colour.x,0.0f),1.0f);
 	ray.Colour.y = std::min(std::max(ray.Colour.y,0.0f),1.0f);
