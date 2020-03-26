@@ -144,6 +144,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderEngine.cpp" />
+    <ClCompile Include="RenderEngineGPU.cpp" />
     <ClCompile Include="RenderEngineSWStepped.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderEngine.h" />
+    <ClInclude Include="RenderEngineGPU.h" />
     <ClInclude Include="RenderEngineSWStepped.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />

@@ -66,6 +66,9 @@
     <ClCompile Include="KeyManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderEngineGPU.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="KeyManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderEngineGPU.h">
+      <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
