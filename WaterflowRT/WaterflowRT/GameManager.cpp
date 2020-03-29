@@ -1,5 +1,5 @@
 #include "GameManager.h"
-#include "RenderEngineSWStepped.h"
+#include "RenderEngineGPU.h"
 #include <iostream>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -44,9 +44,9 @@ GameManager::GameManager()
 //	world->waterengine.Init(Window_Handle);
 	//world->AddWater(glm::dvec2(100,100));
 	std::cout << "Init render engine" << std::endl;
-	renderengine = std::make_unique<RenderEngineSWStepped>(Window_Handle);
-	renderengine->cam.Position.x = world->grid.SizeX / 2;
-	renderengine->cam.Position.y = world->grid.SizeY / 2;
+	renderengine = std::make_unique<RenderEngineGPU>(Window_Handle);
+	renderengine->cam.Position.x = 16 / 2;
+	renderengine->cam.Position.y = 16 / 2;
 	int width, height;
 	glfwGetFramebufferSize(Window_Handle, &width, &height);
 	glViewport(0, 0, width, height);
@@ -119,9 +119,11 @@ void GameManager::PollInput()
 		double xpos, ypos;
 		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
 		glfwSetCursorPos(Window_Handle, 0, 0);
-		speed = DeltaTime * 5;
-		renderengine->cam.tilt -= ypos * speed;
+		speed = DeltaTime * 50;
+		renderengine->cam.tilt += ypos * speed;
 		renderengine->cam.yaw += xpos * speed;
+//		renderengine->cam.tilt = std::min(std::max(renderengine->cam.tilt,1.0f),179.0f);
+		renderengine->cam.tilt = std::clamp(renderengine->cam.tilt,-70.0f,70.0f);
 		float MoveSpeed = 5;
 		if (KeyInput.GetState(GLFW_KEY_W).first)
 		{
@@ -139,6 +141,9 @@ void GameManager::PollInput()
 		{
 			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(sin(glm::radians(renderengine->cam.yaw)),-cos(glm::radians(renderengine->cam.yaw)),0);
 		}
+		renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, 0.0f,-0.1f + (float)world->TestChonk.Size);
+		renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, 0.0f,-0.1f +  (float)world->TestChonk.Size);
+		renderengine->cam.Position.z = std::clamp(renderengine->cam.Position.z, 0.0f,-0.1f +  (float)world->TestChonk.Size);
 	}
 	//if (auto[s,t] = KeyInput.GetState(GLFW_KEY_1); s && t) {
 	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_1)) {

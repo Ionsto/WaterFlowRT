@@ -3,12 +3,11 @@
 
 World::World()
 {
-	for (int x = 0; x < grid.SizeX; ++x)
+	for (int x = 0; x < TestChonk.Size; ++x)
 	{
-		for (int y = 0; y < grid.SizeY; ++y)
+		for (int y = 0; y < TestChonk.Size; ++y)
 		{
 			float scale = 0.01;
-
 			int height = 0;
 			height += (0.1 * (1 + sinf(x)));
 			height += (1 * (1 + sinf(0.1 * x)));
@@ -19,27 +18,56 @@ World::World()
 			height += (2 * (1 + sinf(0.1 * dy)));
 			for (int z = 0; z < std::max(1,height); ++z)
 			{
-				auto& voxel = grid.Get(x, y, z);
-				voxel.Colour.r = 0.1;
-				voxel.Colour.g = 1;
-				voxel.Colour.b = 0.1;
-				voxel.Density = 1;
-				voxel.Solid = true;
-				voxel.Pressure = 1;
-			}
-			for (int z = 0; z < 4; ++z)
-			{
-				auto& voxel = grid.Get(x, y, z);
-				if (!voxel.Solid)
-				{
-					voxel.WaterContent = 1;
-				}
+				auto& block = TestChonk.GetBlockLocal(x, y, z);
+				block.Colour.r = 0.4;
+				block.Colour.g = 1;
+				block.Colour.b = 0.4;
+				block.Solid = true;
 			}
 		}
 	}
+	auto& block = TestChonk.GetBlockLocal(8, 8, 2);
+	block.Colour.r = 0.1;
+	block.Colour.g = 1.0;
+	block.Colour.b = 0.2;
+	block.Solid = true;
+//	for (int x = 0; x < grid.SizeX; ++x)
+//	{
+//		for (int y = 0; y < grid.SizeY; ++y)
+//		{
+//			float scale = 0.01;
+//
+//			int height = 0;
+//			height += (0.1 * (1 + sinf(x)));
+//			height += (1 * (1 + sinf(0.1 * x)));
+//			height += (2 * (1 + sinf(0.1 * x)));
+//			int dy = y + 17;
+//			height += (0.1 * (1 + sinf(dy)));
+//			height += (1 * (1 + sinf(0.1 * dy)));
+//			height += (2 * (1 + sinf(0.1 * dy)));
+//			for (int z = 0; z < std::max(1,height); ++z)
+//			{
+//				auto& voxel = grid.Get(x, y, z);
+//				voxel.Colour.r = 0.1;
+//				voxel.Colour.g = 1;
+//				voxel.Colour.b = 0.1;
+//				voxel.Density = 1;
+//				voxel.Solid = true;
+//				voxel.Pressure = 1;
+//			}
+//			for (int z = 0; z < 4; ++z)
+//			{
+//				auto& voxel = grid.Get(x, y, z);
+//				if (!voxel.Solid)
+//				{
+//					voxel.WaterContent = 1;
+//				}
+//			}
+//		}
+//	}
 }
 void World::Update(float dt) {
-	GenerateCloudNoise(dt);
+	//GenerateCloudNoise(dt);
 	if (WaterCounter++ > 10)
 	{
 		//UpdateWater(dt);
@@ -74,7 +102,7 @@ void World::UpdateWater(float dt)
 }
 void World::UpdateSun(float dt)
 {
-	float sunspeed = 0.3;
+	float sunspeed = 5;
 	SunCounter += dt * sunspeed;
 	SunPosition.x = grid.SizeX/2.0;
 	float sundist = grid.SizeX;

@@ -1,0 +1,181 @@
+#version 430
+struct Block{
+	vec4 Colour;
+	bool Solid;
+};
+struct Node{
+	bool Solid;
+	bool Homogonous;
+	bool Water;
+};
+const float TableMass[2] = float[](20,40);
+const float BoundaryFriction = 0.01;
+const int MaxSteps = 1000;
+const vec3 SunColour = vec3(1,0.9,0.9);
+const int ChunkSize = 16;
+const int ViewSize  = 3;
+const int MaxLevels = 5;
+const float FoV = 60;
+const int RenderBufferSizeX = 256;
+const int RenderBufferSizeY = 256;
+struct Chunk{
+	Node nodes[(ChunkSize * ChunkSize * ChunkSize * 2) + 1];
+};
+layout( location=0 ) uniform vec3 ChunkOffsets;       
+//layout( location=1 ) uniform float SunTime;
+layout (local_size_x = 1, local_size_y = 1) in;
+
+//layout(std430, binding = 0) buffer render_buffer 
+//{
+//	vec3 RenderBuffer_Colour[RenderBufferSizeX * RenderBufferSizeY];
+//};
+layout (binding = 0, rgba32f) uniform image2D destTex;
+uniform float CameraTilt;
+uniform float CameraYaw;
+uniform float SunTime;
+
+layout(std430, binding = 0) buffer block_buffer 
+{
+	Block block_array[ChunkSize * ChunkSize * ChunkSize];
+};
+layout(std430, binding = 1) buffer chunk_buffer 
+{
+	Chunk chunk_array[ViewSize * ViewSize];
+};
+//layout(std430, binding = 1) buffer chunk_buffer 
+//{
+//	Chunk chunk_array[ViewSize * ViewSize];
+//};
+bool InBounds(vec3 pos){
+	vec3 offsetpos = pos + ChunkOffsets;// - ChunkOffsets;
+	return (offsetpos.x >= 0 && offsetpos.y >= 0 && offsetpos.z >= 0) && (offsetpos.x < ChunkSize && offsetpos.y < ChunkSize && offsetpos.z < ChunkSize);
+}
+int GetChunkId(vec3 pos)
+{
+	ivec3 localpos = ivec3(floor((pos - ChunkOffsets) / ChunkSize));
+	return localpos.y + (localpos.x * ViewSize); 
+}
+Block GetBlock(vec3 pos){
+	ivec3 localpos = ivec3(floor(pos + ChunkOffsets));
+	return block_array[localpos.z + (localpos.y * ChunkSize) + (localpos.x * ChunkSize * ChunkSize)];	
+}
+//Node GetNode(int chunk,ivec3 localpos,int level)
+//{
+//	int offset = (1 << level) - 1;
+//	int localsize = ChunkSize >> level;
+	//ivec3 localpos = ivec3(floor(pos / 
+	//int xl = floor(x / localsize);
+//	return chunk_array[chunk].nodes[offset + (localpos.z + (localpos.y * localsize) + (localpos.x * localsize * localsize))];
+//}
+
+//void Trace(vec3 direction){
+//	vec3 Colour = vec3(1);
+//	//All rays start at 0
+//	vec3 RayPosition = vec3(0);
+//	for(int i = 0;i < MaxSteps;++i)
+//	{
+//		if(!InBounds(RayPosition))
+//		{
+//			Colour *= SunColour * pow(dot(SunColour,direction),6);
+//			break;
+//		}
+//		else{
+//			//Step ray
+//			int chunk = GetChunkId(RayPosition);
+//			for(int level = 0;i < MaxLevels;++i){
+//				vec3 offsetpos = RayPosition - ChunkOffsets;
+//				ivec3 nodelocalpos;//ivec3(offsetpos - vec3(floor(offsetpos / (ChunkSize>>level)));
+//				Node node = GetNode(chunk,nodelocalpos,level);
+//			}
+//		}
+//	}
+//}
+const float StepSize = 0.1;
+vec3 SunLighting(vec3 pos){
+	vec3 SunDirection = normalize(vec3(sin(radians(SunTime)),0,cos(radians(SunTime))));
+	vec3 Colour = SunColour;
+	for(int i = 0;i < MaxSteps;++i){
+		pos += SunDirection * StepSize;
+		if(InBounds(pos))
+		{
+			if(GetBlock(pos).Solid)
+			{
+				return vec3(1,0,0);
+			}
+		}
+		else{
+			return SunColour;
+		}
+	}
+	return SunColour;
+}
+vec3 TraceSimple(vec3 pos,vec3 direction)
+{
+	vec3 Colour = vec3(1,1,1);
+	vec3 SunDirection = normalize(vec3(sin(radians(SunTime)),0,cos(radians(SunTime))));
+	int steps = 0;
+	for(;steps < MaxSteps;++steps){
+		if(InBounds(pos))
+		{
+			if(GetBlock(pos).Solid)
+			{
+				Colour = GetBlock(pos).Colour.xyz * SunLighting(pos);
+				break;
+			}
+			else
+			{
+				Colour += vec3(0.1,0.1,0.1) * StepSize;
+			}
+		}
+		else{
+			Colour *= SunColour * pow(dot(normalize(SunDirection),normalize(direction)),6);
+			//Colour = vec3(0,0,1);	
+			break;
+		}
+		pos += direction * StepSize;
+	}
+	if (steps == MaxSteps)
+	{
+		Colour *= SunColour * pow(dot(normalize(SunDirection),normalize(direction)),6);
+	}
+	return Colour;
+}
+
+mat4 rotationX( in float angle ) {
+	return mat4(	1.0,		0,			0,			0,
+			 		0, 	cos(angle),	-sin(angle),		0,
+					0, 	sin(angle),	 cos(angle),		0,
+					0, 			0,			  0, 		1);
+}
+
+mat4 rotationY( in float angle ) {
+	return mat4(	cos(angle),		0,		sin(angle),	0,
+			 				0,		1.0,			 0,	0,
+					-sin(angle),	0,		cos(angle),	0,
+							0, 		0,				0,	1);
+}
+
+mat4 rotationZ( in float angle ) {
+	return mat4(	cos(angle),		-sin(angle),	0,	0,
+			 		sin(angle),		cos(angle),		0,	0,
+							0,				0,		1,	0,
+							0,				0,		0,	1);
+}
+
+void main()
+{
+    uint x = gl_GlobalInvocationID.x;
+    uint y = gl_GlobalInvocationID.y;
+	float dx = (float(x) - float(RenderBufferSizeX/2.0)) / float(RenderBufferSizeX);
+	float dy = (float(y) - float(RenderBufferSizeY/2.0)) / float(RenderBufferSizeX);
+	float yaw = dx * FoV;
+	float tilt = dy * FoV;
+	mat4x4 rotY = rotationY(radians(-CameraTilt + tilt));
+	mat4x4 rotZ = rotationZ(radians(-CameraYaw + -yaw));
+	vec3 RayDirection = (rotZ * rotY * vec4(1,0,0,1)).xyz;
+	RayDirection = normalize(RayDirection);
+	vec3 Colour = TraceSimple(vec3(0),RayDirection);
+//	RenderBuffer_Colour[y + (x * RenderBufferSizeY)] = Colour;
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	imageStore(destTex, storePos, vec4(Colour,1.0));
+}
