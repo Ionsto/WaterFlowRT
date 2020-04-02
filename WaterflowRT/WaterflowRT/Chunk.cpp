@@ -1,8 +1,45 @@
 #include "Chunk.h"
+void Chunk::GenerateData() {
+
+	for (int ix = 0; ix < Size; ++ix)
+	{
+		for (int iy = 0; iy < Size; ++iy)
+		{
+			float x = ix + X;
+			float y = iy + Y;
+			float scale = 0.01;
+			int height = 0;
+			height += (0.1 * (1 + sinf(x)));
+			height += (1 * (1 + sinf(0.1 * x)));
+			height += (2 * (1 + sinf(0.1 * x)));
+			float dy = y + 17;
+			height += (0.1 * (1 + sinf(dy)));
+			height += (1 * (1 + sinf(0.1 * dy)));
+			height += (2 * (1 + sinf(0.1 * dy)));
+			for (int z = 0; z < std::max(1,height); ++z)
+			{
+				auto& block = GetBlockLocal(ix, iy, z);
+				block.Colour.r = 0.4;
+				block.Colour.g = 1;
+				block.Colour.b = 0.4;
+				block.Solid = true;
+			}
+			for (int z = 0; z < 4; ++z)
+			{
+				auto& block = GetBlockLocal(ix, iy, z);
+				if (!block.Solid)
+				{
+					block.WaterContent = 1;
+					block.Water = true;
+				}
+			}
+		}
+	}
+}
 void Chunk::UpdateQuadTree() {
 
 }
-Block& Chunk::UpdateBlock(int xl, int yl, int zl) {
+void Chunk::UpdateBlock(int xl, int yl, int zl) {
 	int x = xl - X;
 	int y = yl - Y;
 	int z = zl;

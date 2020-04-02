@@ -1,100 +1,78 @@
-﻿  RenderEngineSWStepped.cpp
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\Voxel.h(6,23): warning C4305:  'initializing': truncation from 'double' to 'float'
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(11,24): warning C4305:  'initializing': truncation from 'double' to 'float'
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.h(11,39): warning C4305:  'initializing': truncation from 'double' to 'const float'
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(58,15): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(59,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(91,15): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,64): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,64): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,64): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,64): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,64): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,50): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,50): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,50): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,50): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,50): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,36): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,36): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,36): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,36): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(98,36): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,68): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,68): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,68): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,68): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,68): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,54): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,54): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,54): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,54): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,54): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,40): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,40): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,40): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,40): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(100,40): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,58): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,58): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,58): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,58): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,58): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,45): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,45): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,45): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,45): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,45): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,32): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,32): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,32): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,32): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(130,32): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,64): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,64): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,64): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,64): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,64): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,50): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,50): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,50): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,50): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,50): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,36): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,36): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,36): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,36): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(136,36): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,60): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,60): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,60): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,60): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,60): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,46): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,46): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,46): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,46): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,46): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,32): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,32): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,32): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,32): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(144,32): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,96): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,96): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,96): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,96): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,96): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,82): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,82): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,82): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,82): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,82): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,68): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,68): warning C4244:         with
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,68): warning C4244:         [
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,68): warning C4244:             T=float
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,68): warning C4244:         ]
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(150,18): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\RenderEngineSWStepped.cpp(182): warning C4715:  'RenderEngineSWStepped::GetPixel': not all control paths return a value
+﻿  World.cpp
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\Voxel.h(7,23): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\Chunk.h(24,74): warning C4244:  'argument': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\Chunk.h(24,54): warning C4244:  'argument': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\Chunk.h(24,34): warning C4244:  'argument': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\Entity.h(10,22): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\ChunkMap.h(24,11): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\ChunkMap.h(25,11): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(14,24): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,47): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,47): warning C4244:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,47): warning C4244:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,47): warning C4244:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,47): warning C4244:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,28): warning C4244:  'argument': conversion from 'T' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,28): warning C4244:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,28): warning C4244:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,28): warning C4244:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.h(35,28): warning C4244:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(17,22): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(19,31): warning C4244:  'argument': conversion from 'int' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(19,35): warning C4244:  '+=': conversion from 'double' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(20,33): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(20,39): warning C4244:  '+=': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(21,33): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(21,39): warning C4244:  '+=': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(23,31): warning C4244:  'argument': conversion from 'int' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(23,36): warning C4244:  '+=': conversion from 'double' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(24,33): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(24,40): warning C4244:  '+=': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(25,33): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(25,40): warning C4244:  '+=': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(29,25): warning C4305:  '=': truncation from 'double' to 'T'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(29,25): warning C4305:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(29,25): warning C4305:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(29,25): warning C4305:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(29,25): warning C4305:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(31,25): warning C4305:  '=': truncation from 'double' to 'T'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(31,25): warning C4305:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(31,25): warning C4305:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(31,25): warning C4305:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(31,25): warning C4305:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(37,22): warning C4305:  '=': truncation from 'double' to 'T'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(37,22): warning C4305:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(37,22): warning C4305:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(37,22): warning C4305:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(37,22): warning C4305:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(39,22): warning C4305:  '=': truncation from 'double' to 'T'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(39,22): warning C4305:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(39,22): warning C4305:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(39,22): warning C4305:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(39,22): warning C4305:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(83,17): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(115,38): warning C4305:  '=': truncation from 'double' to 'T'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(115,38): warning C4305:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(115,38): warning C4305:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(115,38): warning C4305:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(115,38): warning C4305:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(128,47): warning C4244:  '=': conversion from 'double' to 'T', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(128,47): warning C4244:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(128,47): warning C4244:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(128,47): warning C4244:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(128,47): warning C4244:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(129,47): warning C4244:  '=': conversion from 'double' to 'T', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(129,47): warning C4244:         with
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(129,47): warning C4244:         [
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(129,47): warning C4244:             T=float
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(129,47): warning C4244:         ]
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(130,22): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(140,19): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(150,82): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(151,28): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(153,33): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(174,46): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(176,57): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(182,66): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+D:\Github\WaterFlowRT\WaterflowRT\WaterflowRT\World.cpp(184,76): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
   WaterflowRT.vcxproj -> D:\Github\WaterFlowRT\WaterflowRT\x64\Debug\WaterflowRT.exe

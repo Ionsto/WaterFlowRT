@@ -1,0 +1,275 @@
+#version 430
+struct Block{
+	vec4 Colour;
+	float WaterContent;
+	bool Solid;
+};
+struct Node{
+	bool Solid;
+	bool Homogonous;
+	bool Water;
+};
+const float TableMass[2] = float[](20,40);
+const float BoundaryFriction = 0.01;
+const int MaxSteps = 2000;
+const vec3 SunColour = vec3(1,0.9,0.9);
+const int ChunkSize = 16;
+const int ViewSize  = 5;
+const ivec3 WorldSize = ivec3(ChunkSize*ViewSize,ChunkSize*ViewSize,ChunkSize); 
+const int MaxLevels = 5;
+const float FoV = 60;
+const float NightBlue = 0.2;
+const int RenderBufferSizeX = 256;
+const int RenderBufferSizeY = 256;
+struct Chunk{
+	Node nodes[(ChunkSize * ChunkSize * ChunkSize * 2) + 1];
+};
+layout( location=0 ) uniform vec3 ChunkOffsets;       
+//layout( location=1 ) uniform float SunTime;
+layout (local_size_x = 32, local_size_y = 32) in;
+
+//layout(std430, binding = 0) buffer render_buffer 
+//{
+//	vec3 RenderBuffer_Colour[RenderBufferSizeX * RenderBufferSizeY];
+//};
+layout (binding = 0, rgba32f) uniform image2D destTex;
+uniform float CameraTilt;
+uniform float CameraYaw;
+uniform float SunTime;
+uniform float RandomTimeSeed;
+vec3 SunDirection = normalize(vec3(sin(radians(SunTime)),cos(radians(SunTime * 0.5)),cos(radians(SunTime))));
+
+layout(std430, binding = 0) buffer block_buffer 
+{
+	Block block_array[WorldSize.x * WorldSize.y * WorldSize.z];
+};
+layout(std430, binding = 1) buffer chunk_buffer 
+{
+	Chunk chunk_array[ViewSize * ViewSize];
+};
+//layout(std430, binding = 1) buffer chunk_buffer 
+//{
+//	Chunk chunk_array[ViewSize * ViewSize];
+//};
+bool InBounds(vec3 pos){
+	vec3 offsetpos = pos + ChunkOffsets;// - ChunkOffsets;
+	return (offsetpos.x >= 0 && offsetpos.y >= 0 && offsetpos.z >= 0) && (offsetpos.x < WorldSize.x && offsetpos.y < WorldSize.y && offsetpos.z < WorldSize.z);
+}
+int GetChunkId(vec3 pos)
+{
+	ivec3 localpos = ivec3(floor((pos + ChunkOffsets) / ChunkSize));
+	return localpos.y + (localpos.x * ViewSize); 
+}
+Block GetBlock(vec3 pos){
+	ivec3 localpos = ivec3(floor(pos + ChunkOffsets));
+	return block_array[localpos.z + (localpos.y * WorldSize.z) + (localpos.x * WorldSize.y * WorldSize.z)];	
+}
+//Node GetNode(int chunk,ivec3 localpos,int level)
+//{
+//	int offset = (1 << level) - 1;
+//	int localsize = ChunkSize >> level;
+	//ivec3 localpos = ivec3(floor(pos / 
+	//int xl = floor(x / localsize);
+//	return chunk_array[chunk].nodes[offset + (localpos.z + (localpos.y * localsize) + (localpos.x * localsize * localsize))];
+//}
+
+//void Trace(vec3 direction){
+//	vec3 Colour = vec3(1);
+//	//All rays start at 0
+//	vec3 RayPosition = vec3(0);
+//	for(int i = 0;i < MaxSteps;++i)
+//	{
+//		if(!InBounds(RayPosition))
+//		{
+//			Colour *= SunColour * pow(dot(SunColour,direction),6);
+//			break;
+//		}
+//		else{
+//			//Step ray
+//			int chunk = GetChunkId(RayPosition);
+//			for(int level = 0;i < MaxLevels;++i){
+//				vec3 offsetpos = RayPosition - ChunkOffsets;
+//				ivec3 nodelocalpos;//ivec3(offsetpos - vec3(floor(offsetpos / (ChunkSize>>level)));
+//				Node node = GetNode(chunk,nodelocalpos,level);
+//			}
+//		}
+//	}
+//}
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
+const float StepSize = 0.10;
+vec3 SunLighting(vec3 pos){
+	vec3 planedistance = (pos + ChunkOffsets) - round(pos + ChunkOffsets);
+	vec3 absplanedistance = abs(planedistance);
+	if(absplanedistance.x < StepSize)
+	{
+		pos.x -= planedistance.x;
+	}
+	if(absplanedistance.y < StepSize)
+	{
+		pos.y -= planedistance.y;
+	}
+	if(absplanedistance.z < StepSize)
+	{
+		pos.z -= planedistance.z;
+	}
+	vec3 Colour = SunColour;
+	pos += SunDirection * StepSize;
+	for(int i = 0;i < MaxSteps;++i){
+		pos += SunDirection * StepSize;
+		if(InBounds(pos))
+		{
+			if(GetBlock(pos).Solid)
+			{
+				float ao = 0.08;
+				return vec3(ao);
+			}
+		}
+		else{
+			return SunColour;
+		}
+	}
+	return SunColour;
+}
+vec3 TraceReflection(vec3 pos,vec3 direction)
+{
+	vec3 Colour = vec3(1,1,1);
+	int steps = 0;
+	float PrevWater = 0;
+	for(;steps < MaxSteps;++steps){
+		if(InBounds(pos))
+		{
+			Block block = GetBlock(pos);
+			if(block.Solid)
+			{
+				Colour *= block.Colour.xyz * SunLighting(pos);
+				break;
+			}
+		}
+		else{
+			Colour *= SunColour * pow(dot((SunDirection),normalize(direction)),6) + vec3(0,0,1) * max(NightBlue,cos(radians(SunTime)));
+			break;
+		}
+		pos += direction * StepSize;
+	}
+	if (steps == MaxSteps)
+	{
+			Colour *= SunColour * pow(dot((SunDirection),normalize(direction)),6) + vec3(0,0,1) * max(NightBlue,cos(radians(SunTime)));
+	}
+	return Colour;
+}
+vec3 TraceSimple(vec3 pos,vec3 direction)
+{
+	vec3 Colour = vec3(1,1,1);
+	vec3 Reflection = vec3(0,0,0);
+	int steps = 0;
+	float PrevWater = 0;
+	for(;steps < MaxSteps;++steps){
+		if(InBounds(pos))
+		{
+			Block block = GetBlock(pos);
+			if(block.Solid)
+			{
+				Colour *= block.Colour.xyz * SunLighting(pos);
+				break;
+			}
+			else
+			{
+				//Colour *= block.Colour.xyz * StepSize;
+				if(abs(block.WaterContent - PrevWater) > 0.5){
+					//Colour += vec3(0,1,0.1) * SunLighting(pos);		
+					//Colour *= vec3(0,0.1,1);
+					vec3 normal = vec3(0,0,0);
+					//normal = floor(pos) - floor(pos - (direction*StepSize));
+					//for (int x = 0; (abs(dot(normal,normal)) - 1.0 > 0.2) && x < NormalStepMult;++x)
+					//{
+					//	normal = floor(pos) - floor(pos - (direction*float(x)*(StepSize/float(NormalStepMult))));
+					//}
+					float WaterDeltaX = abs(block.WaterContent - GetBlock(pos - vec3(direction.x * StepSize,0,0)).WaterContent); 
+					float WaterDeltaY = abs(block.WaterContent - GetBlock(pos - vec3(0,direction.y * StepSize,0)).WaterContent); 
+					float WaterDeltaZ = abs(block.WaterContent - GetBlock(pos - vec3(0,0,direction.z * StepSize)).WaterContent); 
+					if(WaterDeltaX > WaterDeltaY && WaterDeltaX > WaterDeltaZ){
+						normal = vec3(-1,0,0) * sign(direction.x);	
+					}
+					if(WaterDeltaY > WaterDeltaX && WaterDeltaY > WaterDeltaZ){
+						normal = vec3(0,-1,0) * sign(direction.y);	
+					}
+					if(WaterDeltaZ > WaterDeltaY && WaterDeltaZ > WaterDeltaX){
+						normal = vec3(0,0,-1) * sign(direction.z);	
+					}
+					vec3 reflection = TraceReflection(pos,reflect(direction,normalize(normal)));
+					Reflection += reflection * 0.5;
+					//Colour += Colour * reflection * 0.9;
+					//break;
+					//vec3 lighting = SunLighting(pos);
+					//Colour += lighting;
+					//break;
+				}
+			}
+			PrevWater = block.WaterContent;
+		}
+		else{
+			Colour *= SunColour * pow(dot((SunDirection),normalize(direction)),6) + vec3(0,0,1) * max(NightBlue,cos(radians(SunTime)));
+			//Colour = vec3(0,0,1);	
+			break;
+		}
+		pos += direction * StepSize;
+	}
+	if (steps == MaxSteps)
+	{
+		Colour *= SunColour * pow(dot((SunDirection),normalize(direction)),6) + vec3(0,0,1) * max(NightBlue,cos(radians(SunTime)));
+	}
+	return Colour + Reflection;
+}
+
+mat4 rotationX( in float angle ) {
+	return mat4(	1.0,		0,			0,			0,
+			 		0, 	cos(angle),	-sin(angle),		0,
+					0, 	sin(angle),	 cos(angle),		0,
+					0, 			0,			  0, 		1);
+}
+
+mat4 rotationY( in float angle ) {
+	return mat4(	cos(angle),		0,		sin(angle),	0,
+			 				0,		1.0,			 0,	0,
+					-sin(angle),	0,		cos(angle),	0,
+							0, 		0,				0,	1);
+}
+
+mat4 rotationZ( in float angle ) {
+	return mat4(	cos(angle),		-sin(angle),	0,	0,
+			 		sin(angle),		cos(angle),		0,	0,
+							0,				0,		1,	0,
+							0,				0,		0,	1);
+}
+
+
+void main()
+{
+    uint x = gl_GlobalInvocationID.x;
+    uint y = gl_GlobalInvocationID.y;
+	float dx = (float(x) - float(RenderBufferSizeX/2.0)) / float(RenderBufferSizeX);
+	float dy = (float(y) - float(RenderBufferSizeY/2.0)) / float(RenderBufferSizeX);
+	float DitherRndX = -0.5 + random(gl_GlobalInvocationID.xy * 52 + RandomTimeSeed);
+	float DitherRndY = -0.5 + random(gl_GlobalInvocationID.xy * 52 + RandomTimeSeed * 3);
+	vec3 OutColour = vec3(0);
+	int sampleCount = 1;
+	for(int i = 0; i < sampleCount;++i)
+	{
+		const float DitherAmount = 0.1;
+		float yaw = (dx * FoV) + (DitherRndX * DitherAmount);
+		float tilt = (dy * FoV) + (DitherRndY * DitherAmount);
+		mat4x4 rotY = rotationY(radians(-CameraTilt + tilt));
+		mat4x4 rotZ = rotationZ(radians(-CameraYaw + -yaw));
+		vec3 RayDirection = (rotZ * rotY * vec4(1,0,0,1)).xyz;
+		RayDirection = normalize(RayDirection);
+		vec3 Colour = TraceSimple(vec3(0),RayDirection);
+		OutColour += Colour;
+	//	RenderBuffer_Colour[y + (x * RenderBufferSizeY)] = Colour;
+	}
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	imageStore(destTex, storePos, vec4(OutColour/float(sampleCount),1.0));
+}

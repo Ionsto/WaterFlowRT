@@ -14,5 +14,7 @@ void EntityPlayer::UpdateInputs()
 }
 void EntityPlayer::Update()
 {
+	Entity::Update();
+	UpdateInputs();
 	RotationOld += 0.9f * (Rotation - RotationOld);
 }

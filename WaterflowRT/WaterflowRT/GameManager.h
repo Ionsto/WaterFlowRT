@@ -18,6 +18,7 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> StartTime;
 	std::chrono::time_point<std::chrono::steady_clock> DtCounter;
 	float DeltaTime = 0;
+	bool KeyCapture = true;
 public:
 	KeyManager KeyInput;
 	EntityPlayer* player = nullptr;

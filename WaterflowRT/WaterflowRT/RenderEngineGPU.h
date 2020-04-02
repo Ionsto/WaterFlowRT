@@ -27,28 +27,61 @@ struct GPUBlock{
 	float y;
 	float z;
 	float w;
-	bool Solid;
-	char Padding[(4 * 4) - 1];
+	float WaterContent;
+	float Solid;
+	float Entity;
+	float padding;
+};
+struct GPUEntityPrimitive{
+	float ColourR;
+	float ColourG;
+	float ColourB;
+	float Colourw;
+	float PosX;
+	float PosY;
+	float PosZ;
+	float PosW;
+	float SizeX;
+	float SizeY;
+	float SizeZ;
+	float SizeW;
+};
+struct GPUChunk {
+	int EntityCount;
+	std::array<int, Chunk::MaxEntitiesPerChunk> EntityIds;
 };
 class RenderEngineGPU : public RenderEngine
 {
 private:
-	static constexpr int FrameSizeX = 256;
-	static constexpr int FrameSizeY = 256;
+	static constexpr int FrameSizeX = 128;
+	static constexpr int FrameSizeY = 128;
+	static constexpr int LocalSize = 32;
 	static constexpr int RenderGridSize = 16;
+	static constexpr int ViewChunkCount = 5;
+	static constexpr int MaxEntityPrimitiveCount = 100;
+	int EntityCounter = 0;
 	GLuint BlockBufferSSBO;
-	std::array<GPUBlock, RenderGridSize* RenderGridSize* RenderGridSize> GPUBlockBuffer;
+	GLuint EntityBufferSSBO;
+	GLuint ChunkBufferSSBO;
+	std::vector<GPUBlock> GPUBlockBuffer = std::vector<GPUBlock>(RenderGridSize* RenderGridSize* RenderGridSize * ViewChunkCount * ViewChunkCount);
+	std::vector<GPUEntityPrimitive> GPUEntityBuffer = std::vector<GPUEntityPrimitive>(MaxEntityPrimitiveCount);
+	std::vector<GPUChunk> GPUChunkBuffer = std::vector<GPUChunk>(ViewChunkCount * ViewChunkCount);
+	glm::vec3 CurrentChunkPos;
+	glm::ivec2 CurrentChunkIds;
 	Shader compute;
 	ShaderProgram program_compute;
 	GLuint UniformTilt;
 	GLuint UniformYaw;
 	GLuint UniformSunTime;
+	GLuint UniformRnd;
+	GLuint UniformEntityCount;
 	GLuint UniformChunkOffset;
+	float DitherTime = 0;
 	Shader vertex;
 	Shader fragment;
 	ShaderProgram program_render;
 	GLuint TextureFrameBuffer;
-	int CurrentBuffer = 0;
+	int CurrentTexture = 0;
 	GLuint FB_VBO;
 	GLuint FB_VAO;
 	GLuint FB_EBO;

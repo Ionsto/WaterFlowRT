@@ -20,8 +20,8 @@ GameManager::GameManager()
 	//glfwWindowHint(GLFW_VERSION_MINOR, 2);;
 	//glfwWindowHint(GLFW_DOUBLEBUFFER, GL_FALSE);
 	std::cout << "Loading window" << std::endl;
-	//Window_Handle = glfwCreateWindow(1920, 1080, "My Title", glfwGetPrimaryMonitor(), NULL);
-	Window_Handle = glfwCreateWindow(800, 800, "My Title",NULL, NULL);
+	//Window_Handle = glfwCreateWindow(1920, 1080, "Beaver game", glfwGetPrimaryMonitor(), NULL);
+	Window_Handle = glfwCreateWindow(800, 800, "Beaver game",NULL, NULL);
 	if (!Window_Handle)
 	{
 		std::cout << "Window load failed" << std::endl;
@@ -62,6 +62,7 @@ GameManager::~GameManager()
 
 void GameManager::Run()
 {
+	glfwSwapBuffers(Window_Handle);
 	std::cout << "Starting game" << std::endl;
 	DtCounter = std::chrono::high_resolution_clock::now();
 	while (Running)
@@ -112,17 +113,20 @@ void GameManager::PollInput()
 		player->PlayerInput.D = KeyInput.GetState(GLFW_KEY_D).first;
 		double xpos, ypos;
 		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
+		glfwSetCursorPos(Window_Handle, 0, 0);
 		player->PlayerInput.dx = xpos;
 		player->PlayerInput.dy = xpos;
 	}
 	else {
 		double xpos, ypos;
-		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
-		glfwSetCursorPos(Window_Handle, 0, 0);
-		speed = DeltaTime * 50;
-		renderengine->cam.tilt += ypos * speed;
-		renderengine->cam.yaw += xpos * speed;
-//		renderengine->cam.tilt = std::min(std::max(renderengine->cam.tilt,1.0f),179.0f);
+		if (KeyCapture)
+		{
+			glfwGetCursorPos(Window_Handle, &xpos, &ypos);
+			glfwSetCursorPos(Window_Handle, 0, 0);
+			speed = DeltaTime * 50;
+			renderengine->cam.tilt += ypos * speed;
+			renderengine->cam.yaw += xpos * speed;
+		}
 		renderengine->cam.tilt = std::clamp(renderengine->cam.tilt,-70.0f,70.0f);
 		float MoveSpeed = 5;
 		if (KeyInput.GetState(GLFW_KEY_W).first)
@@ -141,9 +145,24 @@ void GameManager::PollInput()
 		{
 			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(sin(glm::radians(renderengine->cam.yaw)),-cos(glm::radians(renderengine->cam.yaw)),0);
 		}
-		renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, 0.0f,-0.1f + (float)world->TestChonk.Size);
-		renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, 0.0f,-0.1f +  (float)world->TestChonk.Size);
-		renderengine->cam.Position.z = std::clamp(renderengine->cam.Position.z, 0.0f,-0.1f +  (float)world->TestChonk.Size);
+		if (KeyInput.GetState(GLFW_KEY_M) == std::pair{true,true})
+		{
+			if (KeyCapture)
+			{
+				glfwSetInputMode(Window_Handle, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
+			else
+			{
+				glfwSetInputMode(Window_Handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				glfwSetCursorPos(Window_Handle, 0, 0);
+			}
+			KeyCapture = !KeyCapture;
+		}
+		renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
+		renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
+		//renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, (float)Chunk::Size,-0.1f + ((float)world->Chunks.WorldSize-1) * Chunk::Size);
+		//renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, (float)Chunk::Size,-0.1f +  ((float)world->Chunks.WorldSize-1) * Chunk::Size);
+		renderengine->cam.Position.z = std::clamp(renderengine->cam.Position.z, 0.0f,-0.1f +  (float)Chunk::Size);
 	}
 	//if (auto[s,t] = KeyInput.GetState(GLFW_KEY_1); s && t) {
 	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_1)) {
@@ -153,6 +172,15 @@ void GameManager::PollInput()
 	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_2)) {
 		renderengine->RenderConfig.Refraction ^= true;
 		std::cout << "Refraction: " << renderengine->RenderConfig.Refraction << std::endl;
+	}
+	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_E)) {
+		int id = world->AddEntity(std::make_unique<Entity>(*world));
+		if (id != -1)
+		{
+			auto& entity = world->EntityList.GetParticle(id);
+			entity.Position = glm::vec3(8, 8, 12);
+			entity.PositionOld = glm::vec3(8, 8, 12);
+		}
 	}
 	if (KeyInput.GetState(GLFW_KEY_ESCAPE).first)
 	{
@@ -171,7 +199,6 @@ void GameManager::PollInput()
 void GameManager::Update()
 {
 	PollInput();
-
 //	renderengine->cam.yaw += DeltaTime * 30;
 	//this->waterengine->Update(DeltaTime);
 	world->Update(DeltaTime);
