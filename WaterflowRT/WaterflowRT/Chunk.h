@@ -2,31 +2,30 @@
 #include "QuadNode.h"
 #include "Block.h"
 #include <array>
+class ChunkMap;
 class Chunk
 {
 public:
+	static constexpr float MaxHeight = 64;
 	static constexpr int Size = 16;
-	static constexpr int MaxLevels = 5;
-	static constexpr int Volume = Size * Size * Size;
+	static constexpr int MeshSize = Size * Size;
 	int X, Y;
-	std::array<QuadNode, Volume * 2 + 1> QuadTree;
-	std::array<Block, Volume> block_array;
+	std::array<Block, MeshSize> Mesh;
 	static constexpr int MaxEntitiesPerChunk = 100;
 	int EntityCount = 0;
 	std::array<int, MaxEntitiesPerChunk> EntityRef;
 	void UpdateQuadTree();
-	Block& GetBlockLocal(int x, int y, int z)
+	Block& GetBlockLocal(int x, int y)
 	{
-		return block_array[z + (y * Size) + (x * Size * Size)];
+		return Mesh[y + (x * Size)];
 	}
-	Block& GetBlock(float xl, float yl, float zl)
+	Block& GetBlock(float xl, float yl)
 	{
-		return GetBlockLocal(std::floor(xl - X), std::floor(yl - Y), std::floor(zl));
+		return GetBlockLocal(std::floor(xl - X), std::floor(yl - Y));
 	}
-	void UpdateBlock(int xl, int yl, int zl);
-	QuadNode& GetNode(int x, int y, int z, int level);
-	QuadNode& GetNodeLocal(int i, int j, int k, int level);
+	void UpdateBlock(int xl, int yl);
 	void GenerateData();
-//	void UpdateEntityList();
+	void UpdateWaterPre(ChunkMap & Chunks);
+	void UpdateWaterPost(ChunkMap & Chunks);
 };
 

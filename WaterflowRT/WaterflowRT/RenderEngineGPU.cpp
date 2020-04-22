@@ -1,5 +1,4 @@
 #include "RenderEngineGPU.h"
-#include "RenderEngineSWStepped.h"
 #include <algorithm>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/component_wise.hpp>
@@ -100,37 +99,28 @@ void RenderEngineGPU::CreateQuadTree(World& world)
 			{
 				for (int y = 0; y < Chunk::Size; ++y)
 				{
-					for (int z = 0; z < Chunk::Size; ++z)
+					static constexpr int WorldSizeX = (RenderGridSize * ViewChunkCount);
+					static constexpr int WorldSizeY = (RenderGridSize * ViewChunkCount);
+					int id = ((y + (cy * Chunk::Size))) + (WorldSizeY * (x + (cx * Chunk::Size)));
+					auto& gpublock = GPUBlockBuffer[id];
+					if (world.Chunks.InBounds(CurrentChunkIds.x + cx,CurrentChunkIds.y + cy))
 					{
-						static constexpr int WorldSizeX = (RenderGridSize * ViewChunkCount);
-						static constexpr int WorldSizeY = (RenderGridSize * ViewChunkCount);
-						static constexpr int WorldSizeZ = (RenderGridSize);
-						int id = z + (WorldSizeZ * (y + (cy * Chunk::Size))) + (WorldSizeZ * WorldSizeY * (x + (cx * Chunk::Size)));
-						auto& gpublock = GPUBlockBuffer[id];
-						if (world.Chunks.InBounds(CurrentChunkIds.x + cx,CurrentChunkIds.y + cy))
-						{
-							Chunk & chunk = world.Chunks.GetChunk(CurrentChunkIds.x + cx, CurrentChunkIds.y + cy);
-							auto block = chunk.GetBlockLocal(x, y, z);
-							gpublock.Solid = block.Solid ? 1 : 0;
-							gpublock.Entity = block.Entity ? 1 : 0;
-							gpublock.x = block.Colour.r;
-							gpublock.y = block.Colour.g;
-							gpublock.z = block.Colour.b;
-							gpublock.WaterContent = block.WaterContent;
-						}
-						else
-						{
-							gpublock.Solid = true;
-							gpublock.x = 1;
-							gpublock.y = 0;
-							gpublock.z = 0;
-							gpublock.Entity = false;
-							gpublock.WaterContent = 0;
-						}
-						//gpublock.z = block.Colour.z;
-
-						//gpublock.y = 0;
+						Chunk & chunk = world.Chunks.GetChunk(CurrentChunkIds.x + cx, CurrentChunkIds.y + cy);
+						auto block = chunk.GetBlockLocal(x, y);
+						gpublock.RockHeight = block.RockHeight;
+						gpublock.SandHeight = block.SandHeight;
+						gpublock.SoilHeight = block.SoilHeight;
+						gpublock.WaterHeight = block.WaterHeight;
+						gpublock.SedimentContent = block.SedimentContent;
+						gpublock.Entity = block.Entity ? 1 : 0;
 					}
+					else
+					{
+						gpublock.RockHeight = Chunk::MaxHeight;
+					}
+					//gpublock.z = block.Colour.z;
+
+					//gpublock.y = 0;
 				}
 			}
 			if (world.Chunks.InBounds(CurrentChunkIds.x + cx, CurrentChunkIds.y + cy))

@@ -13,9 +13,7 @@ class World
 public:
 	float DeltaTime = 0.01;
 	float DeltaTimeAccumulator = 0;
-	VoxelGrid grid;
 	ChunkMap Chunks;
-	Chunk TestChonk;
 	float SunCounter = 0;
 	glm::fvec3 SunPosition = glm::fvec3(0,0,19.9);
 	glm::fvec3 SunColour = glm::fvec3(1,0.9,0.9);
@@ -34,9 +32,9 @@ public:
 	{
 		if (Chunks.InBounds(pos.x/Chunk::Size, pos.y/Chunk::Size))
 		{
-			return Chunks.GetChunkPos(pos.x, pos.y).GetBlock(pos.x, pos.y, pos.z);
+			return Chunks.GetChunkPos(pos.x, pos.y).GetBlock(pos.x, pos.y);
 		}
-		return Chunks.GetChunkPos(0,0).GetBlock(0, 0, 0);
+		return Chunks.GetChunkPos(0,0).GetBlock(0, 0);
 	}
 };
 

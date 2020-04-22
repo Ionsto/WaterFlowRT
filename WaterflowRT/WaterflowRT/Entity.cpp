@@ -22,7 +22,8 @@ void Entity::Intergrate()
 		if (world.Chunks.InBounds(BlockPos.x, BlockPos.y))
 		{
 			auto& intersectchunk = world.Chunks.GetChunkPos(BlockPos.x, BlockPos.y);
-			if (intersectchunk.GetBlock(BlockPos.x, BlockPos.y, BlockPos.z).Solid)
+			auto block = intersectchunk.GetBlock(BlockPos.x, BlockPos.y);
+			if (Position.z < block.RockHeight + block.SoilHeight + block.SandHeight)
 			{
 				Solid = true;
 			}
@@ -87,15 +88,16 @@ void Entity::Update()
 		Direction.z = 0;
 		DirectionCounter = 0;
 	}
-	if (world.GetBlock(Position + glm::vec3(0, 0, -1)).Solid);
+	auto block = world.GetBlock(Position);
+	if (abs(Position.z - block.RockHeight + block.SoilHeight + block.SandHeight) < 1)
 	{
 		if (rand() % 1000 == 0)
 		{
 			Acceleration.z += 600;
 		}
 	}
-	if (world.GetBlock(Position).Water)
+	if (Position.z > block.RockHeight + block.SoilHeight + block.SandHeight && Position.z < block.WaterHeight + block.RockHeight + block.SoilHeight + block.SandHeight)
 	{
-		//Acceleration.z += 9.8;
+		Acceleration.z += 2.8;
 	}
 }

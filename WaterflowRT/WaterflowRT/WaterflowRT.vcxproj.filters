@@ -54,9 +54,6 @@
     <ClCompile Include="RenderEngine.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="RenderEngineSWStepped.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="RenderEngine.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderEngineSWStepped.h">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">

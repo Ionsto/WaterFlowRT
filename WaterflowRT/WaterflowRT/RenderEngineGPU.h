@@ -2,35 +2,15 @@
 #include "RenderEngine.h"
 #include "ShaderProgram.h"
 #include <array>
-class OctNode {
-//	int SizeX,SizeY,SizeZ;
-	bool Solid;
-	bool Homogonous;
-};
-class OctTree {
-	static constexpr int SizeX = 32;
-	static constexpr int SizeY = 32;
-	static constexpr int SizeZ = 32;
-	std::array <OctNode,SizeX * SizeY * SizeZ * 2 - 1> raw_data;
-	OctNode GetNode(int x, int y, int z, int level)
-	{
-		int LevelOffset = 1 << level;
-		return raw_data[(LevelOffset - 1) + z + (y * SizeZ) + (x * SizeY * SizeZ)];
-	}
-	int GetSize(int level)
-	{
-		return SizeX >> level;
-	}
-};
+
 struct GPUBlock{
-	float x;
-	float y;
-	float z;
-	float w;
-	float WaterContent;
-	float Solid;
-	float Entity;
-	float padding;
+	float RockHeight = 0;
+	float SandHeight = 0;
+	float SoilHeight = 0;
+	float WaterHeight = 0;
+	float SedimentContent = 0;
+	float Entity = 0;
+//	float padding;
 };
 struct GPUEntityPrimitive{
 	float ColourR;
@@ -63,7 +43,7 @@ private:
 	GLuint BlockBufferSSBO;
 	GLuint EntityBufferSSBO;
 	GLuint ChunkBufferSSBO;
-	std::vector<GPUBlock> GPUBlockBuffer = std::vector<GPUBlock>(RenderGridSize* RenderGridSize* RenderGridSize * ViewChunkCount * ViewChunkCount);
+	std::vector<GPUBlock> GPUBlockBuffer = std::vector<GPUBlock>(RenderGridSize* RenderGridSize * ViewChunkCount * ViewChunkCount);
 	std::vector<GPUEntityPrimitive> GPUEntityBuffer = std::vector<GPUEntityPrimitive>(MaxEntityPrimitiveCount);
 	std::vector<GPUChunk> GPUChunkBuffer = std::vector<GPUChunk>(ViewChunkCount * ViewChunkCount);
 	glm::vec3 CurrentChunkPos;
