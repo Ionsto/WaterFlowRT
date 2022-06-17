@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "World.h"
+#include <algorithm>
 
 Entity::Entity(World& world) : world(world)
 {

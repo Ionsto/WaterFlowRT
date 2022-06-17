@@ -1,7 +1,6 @@
 #include "Chunk.h"
 #include "ChunkMap.h"
 void Chunk::GenerateData() {
-
 	for (int ix = 0; ix < Size; ++ix)
 	{
 		for (int iy = 0; iy < Size; ++iy)
